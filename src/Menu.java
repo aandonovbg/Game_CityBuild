@@ -3,19 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-    public static void startMenu(List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][]resources) {
-
-        System.out.println("Please choose what to do");
-        System.out.println("1 - > Build;");
-        System.out.println("2 - > Attack;");
-        System.out.println("3 - > List of Buildings;");
-        System.out.println("4 - > Show Resources;");
-        System.out.println("0 - > EXIT;");
-        System.out.print("Your choice - > ");
-        Scanner sc = new Scanner(System.in);
-        String choice = sc.next();
+    public static void validateChoice(String choice,List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][]resources){
         try {
-            Integer.parseInt(choice);
             if (Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 4) {
                 System.out.println();
                 System.out.println("Invalid choice! Enter Digit from 0 to 4");
@@ -28,18 +17,34 @@ public class Menu {
             System.out.println();
             startMenu(buildings, builders, harvesters,resources);
         }
+    }
+    public static void startMenu(List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][]resources) {
+        System.out.println("        MAIN MENU");
+        System.out.println("Please choose what to do");
+        System.out.println("1 - > Build;");
+        System.out.println("2 - > Attack;");
+        System.out.println("3 - > List of Buildings;");
+        System.out.println("4 - > Show Resources;");
+        System.out.println("0 - > EXIT;");
+        System.out.print("Your choice - > ");
+        Scanner sc = new Scanner(System.in);
+        String choice = sc.next();
+        validateChoice(choice,buildings, builders,harvesters,resources);
 
         switch (Integer.parseInt(choice)) {
             case 1 -> buildMenu(buildings, builders,harvesters,resources);
             //case 2 -> attackMenu();
             case 3 -> listBuildings(buildings, builders,harvesters,resources);
-            case 4 -> showResources(resources);
+            case 4 -> showResources(buildings, builders,harvesters,resources);
         }
     }
 
-    public static void showResources(String[][] resources){
-        System.out.println(Arrays.deepToString(resources).replace("[[","").replace("],","\n")
+    public static void showResources(List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][] resources){
+        System.out.println();
+        System.out.println("Your current resource's status: ");
+        System.out.println(Arrays.deepToString(resources).replace("[[","").replace("], ","\n")
                 .replace("[","").replace(",","").replace("]]",""));
+        startMenu(buildings,builders,harvesters,resources);
     }
     public static void listBuildings(List<Building> buildings, List<Builder> builders,List<Harvester> harvesters,String[][]resources) {
         if (buildings.size() == 0) {
@@ -71,24 +76,16 @@ public class Menu {
 
     public static void buildMenu(List<Building> buildings, List<Builder> builders,List<Harvester> harvesters,String[][] resources) {
         System.out.println();
+        System.out.println("                        BUILD MENU");
         buildMenuStyle();
+        System.out.println("Your current resource's status: ");
+        System.out.println(Arrays.deepToString(resources).replace("[[","").replace("], ","\n")
+                .replace("[","").replace(",","").replace("]]",""));
         System.out.print("Your choice - > ");
         Scanner sc = new Scanner(System.in);
         String choice1 = sc.next();
-        try {
-            if (Integer.parseInt(choice1) < 0 || Integer.parseInt(choice1) > 7) {
-                System.out.println();
-                System.out.println("Invalid choice! Enter Digit from 0 to 7");
-                System.out.println();
-                startMenu(buildings, builders, harvesters,resources);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println();
-            System.out.println("Invalid choice! Enter Digit from 0 to 7");
-            System.out.println();
+        validateChoice(choice1,buildings, builders,harvesters,resources);
 
-            startMenu(buildings, builders, harvesters,resources);
-        }
         switch (Integer.parseInt(choice1)) {
             case 1 -> {
                 Builder.build("Town Hall", 1000, 1000, buildings, builders,resources);
@@ -97,10 +94,12 @@ public class Menu {
             }
             case 2 -> {
                 Builder.build("Barracks", 500, 500, buildings, builders,resources);
+
                 buildMenu(buildings, builders,harvesters,resources);
             }
             case 3 -> {
                 Builder.build("Hospital", 700, 700, buildings, builders,resources);
+
                 buildMenu(buildings, builders,harvesters,resources);
             }
             case 4 -> {
@@ -121,6 +120,7 @@ public class Menu {
             }
             case 0 -> startMenu(buildings, builders, harvesters,resources);
         }
+        showResources(buildings, builders,harvesters,resources);
     }
     public static void buildMenuStyle(){
         String [][] buildMenu= new String[9][3];

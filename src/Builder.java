@@ -15,21 +15,6 @@ public class Builder extends Unit {
         this.occupationTimer = 0;
     }
 
-    public int getOccupationTimer() {
-        return occupationTimer;
-    }
-
-    public void setOccupationTimer(int occupationTimer) {
-        this.occupationTimer = occupationTimer;
-    }
-
-    public boolean isOccupied() {
-        return isOccupied;
-    }
-
-    public void setOccupied(boolean occupied) {
-        isOccupied = occupied;
-    }
     public static int getBuildersCounter() {
         return buildersCounter;
     }
@@ -61,10 +46,10 @@ public class Builder extends Unit {
         return Integer.parseInt(unitsUsed);
     }
 
-    public static void build(String buildingName, int buildingEndurance, int buildingConstrTime, List<Building> buildings, List<Builder> builders,String[][] resources) {
-        if (!isResourcesEnough(resources, buildingName)){
+    public static void build(String buildingName, int buildingEndurance, int buildingConstrTime, List<Building> buildings, List<Builder> builders, String[][] resources) {
+        if (!isResourceEnough(resources, buildingName)) {
             System.out.println("Not enough Resources!");
-        }else {
+        } else {
             if (Building.uniqueBuilding(buildingName, buildings)) {
                 System.out.println("You can build only 1 " + buildingName + "in your Town");
                 return;
@@ -87,54 +72,53 @@ public class Builder extends Unit {
                     buildings.add(new Building(buildingName, buildingEndurance, buildingConstrTime));
                     int constructionDuration = buildings.get(buildings.size() - 1).constructionTime / builders.get(0).buildSpeed;
                     System.out.println(buildingName + " will be build after " + constructionDuration + " seconds");
+
                 }
             }
         }
     }
 
-    public static boolean isResourcesEnough(String[][] resources, String buildingName) {
+    public static boolean validateResources(String[][] resources, int gold, int food, int wood, int stone) {
+        boolean isResEnough = false;
+        if (Integer.parseInt(resources[0][1]) - gold >= 0 && Integer.parseInt(resources[1][1]) - food >= 0 && Integer.parseInt(resources[2][1]) - wood >= 0 && Integer.parseInt(resources[3][1]) - stone >= 0) {
+            resources[0][1] = String.valueOf(Integer.parseInt(resources[0][1]) - gold);
+            resources[1][1] = String.valueOf(Integer.parseInt(resources[1][1]) - food);
+            resources[2][1] = String.valueOf(Integer.parseInt(resources[2][1]) - wood);
+            resources[3][1] = String.valueOf(Integer.parseInt(resources[3][1]) - stone);
+            isResEnough = true;
+        }
+        return isResEnough;
+    }
+
+    public static boolean isResourceEnough(String[][] resources, String buildingName) {
         boolean isResourcesEnough = false;
         switch (buildingName) {
-            case "Town Hall" -> {
-                if (Integer.parseInt(resources[0][1]) - 250 >= 0 && Integer.parseInt(resources[1][1]) - 100 >= 0 && Integer.parseInt(resources[2][1]) - 200 >= 0 && Integer.parseInt(resources[3][1]) - 200 >= 0) {
-                     isResourcesEnough=true;
-                }
-            }
-            case "Barracks" -> {
-                if (Integer.parseInt(resources[0][1]) - 100 >= 0 && Integer.parseInt(resources[1][1]) - 50 >= 0 && Integer.parseInt(resources[2][1]) - 100 >= 0 && Integer.parseInt(resources[3][1]) - 120 >= 0) {
-                    isResourcesEnough=true;
-                }
-            }
-            case "Hospital" -> {
-                if (Integer.parseInt(resources[0][1]) - 200 >= 0 && Integer.parseInt(resources[1][1]) - 100 >= 0 && Integer.parseInt(resources[2][1]) - 200 >= 0 && Integer.parseInt(resources[3][1]) - 200 >= 0) {
-                    isResourcesEnough=true;
-                }
-            }
-            case "Gold Mine" -> {
-                if (Integer.parseInt(resources[0][1]) >= 0 && Integer.parseInt(resources[1][1]) - 100 >= 0 && Integer.parseInt(resources[2][1]) - 50 >= 0 && Integer.parseInt(resources[3][1]) - 50 >= 0) {
-                    isResourcesEnough=true;
-                }
-            }
-            case "Grain Field" -> {
-                if (Integer.parseInt(resources[0][1]) >= 50 && Integer.parseInt(resources[1][1]) >= 0 && Integer.parseInt(resources[2][1]) - 50 >= 0 && Integer.parseInt(resources[3][1]) - 50 >= 0) {
-                    isResourcesEnough=true;
-                }
-            }
-            case "Lumber Mill" -> {
-                if (Integer.parseInt(resources[0][1]) >= 50 && Integer.parseInt(resources[1][1]) - 50 >= 0 && Integer.parseInt(resources[2][1]) >= 0 && Integer.parseInt(resources[3][1]) - 70 >= 0) {
-                    isResourcesEnough=true;
-                }
-            }
-            case "Stone Mine" -> {
-                if (Integer.parseInt(resources[0][1]) >= 50 && Integer.parseInt(resources[1][1]) - 50 >= 0 && Integer.parseInt(resources[2][1]) >= 50 && Integer.parseInt(resources[3][1]) >= 0) {
-                    isResourcesEnough=true;
-                }
-            }
+            case "Town Hall" -> isResourcesEnough = validateResources(resources, 250, 100, 200, 200);
+            case "Barracks" -> isResourcesEnough = validateResources(resources, 100, 50, 100, 120);
+            case "Hospital" -> isResourcesEnough = validateResources(resources, 200, 100, 200, 200);
+            case "Gold Mine" -> isResourcesEnough = validateResources(resources, 0, 100, 50, 50);
+            case "Grain Field" -> isResourcesEnough = validateResources(resources, 50, 0, 50, 50);
+            case "Lumber Mill" -> isResourcesEnough = validateResources(resources, 50, 50, 0, 70);
+            case "Stone Mine" -> isResourcesEnough = validateResources(resources, 50, 50, 50, 0);
         }
         return isResourcesEnough;
     }
 
+    public int getOccupationTimer() {
+        return occupationTimer;
+    }
 
+    public void setOccupationTimer(int occupationTimer) {
+        this.occupationTimer = occupationTimer;
+    }
+
+    public boolean isOccupied() {
+        return isOccupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        isOccupied = occupied;
+    }
 
     @Override
     public String toString() {
