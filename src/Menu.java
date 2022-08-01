@@ -35,17 +35,39 @@ public class Menu {
             case 1 -> buildMenu(buildings, builders,harvesters,resources);
             //case 2 -> attackMenu();
             case 3 -> listBuildings(buildings, builders,harvesters,resources);
-            case 4 -> showResources(buildings, builders,harvesters,resources);
+            case 4 -> showResourcesMainMenu(buildings, builders,harvesters,resources);
         }
     }
 
-    public static void showResources(List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][] resources){
+    public static void showResourcesMainMenu(List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][] resources){
         System.out.println();
         System.out.println("Your current resource's status: ");
         System.out.println(Arrays.deepToString(resources).replace("[[","").replace("], ","\n")
                 .replace("[","").replace(",","").replace("]]",""));
+        System.out.println();
         startMenu(buildings,builders,harvesters,resources);
     }
+
+    public static void showResources(List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][] resources){
+        String[][] myResources=new String[2][4];
+        myResources[0][0]=" Gold";
+        myResources[0][1]="Food";
+        myResources[0][2]="Wood";
+        myResources[0][3]="Stone";
+
+        myResources[1][0]=resources[0][1];
+        myResources[1][1]=" "+resources[1][1];
+        myResources[1][2]=" "+resources[2][1];
+        myResources[1][3]=" "+resources[3][1];
+
+        System.out.println();
+        System.out.println("Your current resource's status: ");
+        System.out.println(Arrays.deepToString(myResources).replace("[[","").replace("],","\n")
+                .replace("[","").replace(",","").replace("]]",""));
+        System.out.println();
+
+    }
+
     public static void listBuildings(List<Building> buildings, List<Builder> builders,List<Harvester> harvesters,String[][]resources) {
         if (buildings.size() == 0) {
             System.out.println("List is still empty.\nBuild something!!!");
@@ -78,9 +100,8 @@ public class Menu {
         System.out.println();
         System.out.println("                        BUILD MENU");
         buildMenuStyle();
-        System.out.println("Your current resource's status: ");
-        System.out.println(Arrays.deepToString(resources).replace("[[","").replace("], ","\n")
-                .replace("[","").replace(",","").replace("]]",""));
+
+        showResources(buildings, builders,harvesters,resources);
         System.out.print("Your choice - > ");
         Scanner sc = new Scanner(System.in);
         String choice1 = sc.next();
@@ -89,17 +110,14 @@ public class Menu {
         switch (Integer.parseInt(choice1)) {
             case 1 -> {
                 Builder.build("Town Hall", 1000, 1000, buildings, builders,resources);
-
                 buildMenu(buildings, builders,harvesters,resources);
             }
             case 2 -> {
                 Builder.build("Barracks", 500, 500, buildings, builders,resources);
-
                 buildMenu(buildings, builders,harvesters,resources);
             }
             case 3 -> {
                 Builder.build("Hospital", 700, 700, buildings, builders,resources);
-
                 buildMenu(buildings, builders,harvesters,resources);
             }
             case 4 -> {
@@ -122,6 +140,7 @@ public class Menu {
         }
         showResources(buildings, builders,harvesters,resources);
     }
+
     public static void buildMenuStyle(){
         String [][] buildMenu= new String[9][3];
         buildMenu[0][0]=" N: ";
@@ -155,7 +174,5 @@ public class Menu {
         System.out.println(Arrays.deepToString(buildMenu).replace("[[","").replace("],","\n")
                 .replace("[","").replace(",","").replace("]]",""));
     }
-    public static void payBuilding(String[][] resources){
 
-    }
 }

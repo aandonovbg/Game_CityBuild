@@ -2,8 +2,12 @@ import java.util.List;
 
 public class Building {
     String name;
-    int endurance;
-    int constructionTime;
+    protected int gold;
+    protected int food;
+    protected int wood;
+    protected int stone;
+    protected int endurance;
+    protected int constructionTime;
 
     public Building(String name, int endurance, int constructionTime) {
         this.name = name;
