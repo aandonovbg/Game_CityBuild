@@ -1,7 +1,7 @@
 import java.util.TimerTask;
 
 public class MyTimerTask extends TimerTask {
-    protected final int buildersUsed;
+    protected int buildersUsed;
 
     public MyTimerTask(int buildersUsed) {
         this.buildersUsed = buildersUsed;

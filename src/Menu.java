@@ -3,17 +3,49 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-    public static void validateChoice(String choice,List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][]resources){
+    public static void validateChoiceStartMenu(String choice,List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][]resources){
         try {
-            if (Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 4) {
+            if (Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 5) {
                 System.out.println();
-                System.out.println("Invalid choice! Enter Digit from 0 to 4");
+                System.out.println("Invalid choice! Enter Digit from 0 to 5");
                 System.out.println();
                 startMenu(buildings, builders, harvesters,resources);
             }
         } catch (NumberFormatException e) {
             System.out.println();
-            System.out.println("Invalid choice! Enter Digit from 0 to 4");
+            System.out.println("Invalid choice! Enter Digit from 0 to 5");
+            System.out.println();
+            startMenu(buildings, builders, harvesters,resources);
+        }
+    }
+
+    public static void validateChoiceBuildMenu(String choice,List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][]resources){
+        try {
+            if (Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 7) {
+                System.out.println();
+                System.out.println("Invalid choice! Enter Digit from 0 to 7");
+                System.out.println();
+                startMenu(buildings, builders, harvesters,resources);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println();
+            System.out.println("Invalid choice! Enter Digit from 0 to 7");
+            System.out.println();
+            startMenu(buildings, builders, harvesters,resources);
+        }
+    }
+
+    public static void validateChoiceProduceMenu(String choice,List<Building> buildings, List<Builder> builders, List<Harvester> harvesters,String[][]resources){
+        try {
+            if (Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 3) {
+                System.out.println();
+                System.out.println("Invalid choice! Enter Digit from 0 to 3");
+                System.out.println();
+                startMenu(buildings, builders, harvesters,resources);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println();
+            System.out.println("Invalid choice! Enter Digit from 0 to 3");
             System.out.println();
             startMenu(buildings, builders, harvesters,resources);
         }
@@ -22,20 +54,21 @@ public class Menu {
         System.out.println("        MAIN MENU");
         System.out.println("Please choose what to do");
         System.out.println("1 - > Build;");
-        System.out.println("2 - > Attack;");
-        System.out.println("3 - > List of Buildings;");
-        System.out.println("4 - > Show Resources;");
+        System.out.println("2 - > Produce;");
+        System.out.println("3 - > Attack;");
+        System.out.println("4 - > List of Buildings;");
+        System.out.println("5 - > Show Resources;");
         System.out.println("0 - > EXIT;");
         System.out.print("Your choice - > ");
         Scanner sc = new Scanner(System.in);
         String choice = sc.next();
-        validateChoice(choice,buildings, builders,harvesters,resources);
+        validateChoiceStartMenu(choice,buildings, builders,harvesters,resources);
 
         switch (Integer.parseInt(choice)) {
             case 1 -> buildMenu(buildings, builders,harvesters,resources);
-            //case 2 -> attackMenu();
-            case 3 -> listBuildings(buildings, builders,harvesters,resources);
-            case 4 -> showResourcesMainMenu(buildings, builders,harvesters,resources);
+            case 2 -> produceMenu(buildings, builders,harvesters,resources);
+            case 4 -> listBuildings(buildings, builders,harvesters,resources);
+            case 5 -> showResourcesMainMenu(buildings, builders,harvesters,resources);
         }
     }
 
@@ -92,6 +125,7 @@ public class Menu {
                 }
             }
         }
+        System.out.println();
         startMenu(buildings, builders, harvesters,resources);
     }
 
@@ -105,7 +139,7 @@ public class Menu {
         System.out.print("Your choice - > ");
         Scanner sc = new Scanner(System.in);
         String choice1 = sc.next();
-        validateChoice(choice1,buildings, builders,harvesters,resources);
+        validateChoiceBuildMenu(choice1,buildings, builders,harvesters,resources);
 
         switch (Integer.parseInt(choice1)) {
             case 1 -> {
@@ -174,5 +208,40 @@ public class Menu {
         System.out.println(Arrays.deepToString(buildMenu).replace("[[","").replace("],","\n")
                 .replace("[","").replace(",","").replace("]]",""));
     }
+    public static void produceMenuStyle(){
+        System.out.println();
+        String [][] produceMenu= new String[5][3];
+        produceMenu[0][0]=" N: ";
+        produceMenu[1][0]="1 - >";
+        produceMenu[2][0]="2 - >";
+        produceMenu[3][0]="3 - >";
+        produceMenu[4][0]="0 - >";
+        produceMenu[0][1]="        Produce Menu     ";
+        produceMenu[1][1]="Produce Builders.";
+        produceMenu[2][1]="Produce/ Upgrade Soldiers.";
+        produceMenu[3][1]="Produce Harvesters.";
+        produceMenu[4][1]="Back.";
+        produceMenu[0][2]="       Price G/F/W/S ";
+        produceMenu[1][2]="             250/100/0/0";
+        produceMenu[2][2]="    100/50/100/120";
+        produceMenu[3][2]="           200/100/0/0";
+        produceMenu[4][2]="";
+
+        System.out.println(Arrays.deepToString(produceMenu).replace("[[","").replace("],","\n")
+                .replace("[","").replace(",","").replace("]]",""));
+    }
+public static void produceMenu(List<Building> buildings, List<Builder> builders,List<Harvester> harvesters,String[][] resources){
+        produceMenuStyle();
+    System.out.print("Your choice - > ");
+    Scanner sc = new Scanner(System.in);
+    String choice = sc.next();
+    validateChoiceProduceMenu(choice,buildings, builders,harvesters,resources);
+
+    switch (Integer.parseInt(choice)){
+        case 0 -> startMenu(buildings, builders, harvesters,resources);
+        case 1 ->Builder.produceBuilders(builders,buildings,harvesters,resources);
+    }
+
+}
 
 }
